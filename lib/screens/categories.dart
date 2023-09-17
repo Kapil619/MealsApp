@@ -56,29 +56,31 @@ class _CategoriesScreenState extends State<CategoriesScreen>
     BuildContext context,
   ) {
     return AnimatedBuilder(
-        animation: _animationController,
-        child: GridView(
-          padding: const EdgeInsets.all(24),
-          gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-              crossAxisCount: 2, //setting number of columns
-              childAspectRatio: 3 / 2,
-              crossAxisSpacing: 20,
-              mainAxisSpacing: 20),
-          children: [
-            //mapping on availableCategories
-            for (final category in availableCategories)
-              CategoryGridItem(
-                category: category,
-                onSelectCategory: () {
-                  _selectCategory(context, category);
-                },
-              )
-          ],
-        ),
-        builder: (context, child) => Padding(
-              padding:
-                  EdgeInsets.only(top: 100 - _animationController.value * 100),
-              child: child,
-            ));
+      animation: _animationController,
+      child: GridView(
+        padding: const EdgeInsets.all(24),
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+            crossAxisCount: 2, //setting number of columns
+            childAspectRatio: 3 / 2,
+            crossAxisSpacing: 20,
+            mainAxisSpacing: 20),
+        children: [
+          //mapping on availableCategories
+          for (final category in availableCategories)
+            CategoryGridItem(
+              category: category,
+              onSelectCategory: () {
+                _selectCategory(context, category);
+              },
+            )
+        ],
+      ),
+      builder: (context, child) => SlideTransition(
+        position: Tween(begin: const Offset(0, 0.3), end: const Offset(0, 0))
+            .animate(CurvedAnimation(
+                parent: _animationController, curve: Curves.easeInOut)),
+        child: child,
+      ),
+    );
   }
 }
